@@ -6,7 +6,7 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="layui/css/layui.css" media="all">
 </head>
-<body>
+<body style="margin-left: 50px">
 
 <div class="layui-upload-list">
     <img class="layui-upload-img" id="img" style="margin-left: 20px" height="200px" width="200px">
@@ -14,6 +14,13 @@
 <button type="button" style="margin-left: 20px" class="layui-btn" id="upload">
     <i class="layui-icon">&#xe67c;</i>上传图片
 </button>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>设置匹配度</legend>
+</fieldset>
+
+<div id="slide" class="demo-slider" style="margin-bottom: 20px"></div>
+<div id="tips" style="position:relative; left: 10px; top: -20px;margin-bottom: 20px">当前匹配度：<span id="score_num">70</span>%</div>
 
 <div>匹配结果</div>
 
@@ -23,9 +30,19 @@
 
 <script src="layui/layui.js"></script>
 <script>
-
-
-    layui.use('upload', function () {
+    layui.use(['upload', 'slider'], function () {
+        var $ = layui.$
+            , slider = layui.slider;
+        //设置提示文本
+        slider.render({
+            elem: '#slide',
+            min: 0,
+            max: 100,
+            value: 70
+            , change: function (value) {
+                $('#score_num').html(value);
+            }
+        });
         var upload = layui.upload;
 
         //执行实例
@@ -44,7 +61,9 @@
                 var imgList = new Array();
                 for (var i = 0; i < array.length; i++) {
                     var score = array[i].score;
-                    if (score >= 0.7) {
+                    var socre_value = $("#score_num").text();
+                    console.log(socre_value);
+                    if (score >= socre_value/100) {
                         // $("#img1").attr("src", "image/"+array[i].brief);
                         imgList.push("image/" + array[i].brief);
                     }
@@ -54,7 +73,7 @@
                 for (var i = 0; i < imgList.length; i++) {
                     // $("#img1").attr("src", imgList[i]);
                     var img = imgList[i];
-                    var body = "<img class=\"layui-upload-img\" id=\"img1\" src=\""+img+"\" alt=\"\" width=\"200px\" height=\"200px\" style='margin-left: 20px'>";
+                    var body = "<img class=\"layui-upload-img\" id=\"img1\" src=\"" + img + "\" alt=\"\" width=\"200px\" height=\"200px\" style='margin-left: 20px'>";
                     list.append(body);
                 }
                 layer.closeAll('loading');
