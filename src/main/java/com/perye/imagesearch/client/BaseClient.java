@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class BaseClient {
 
-    protected String appId;
+    protected String appId = "";
     protected String aipKey;
     protected String aipToken;
     protected String accessToken;   // 不适用于使用公有云ak/sk的用户

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>以图搜图</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+</head>
+<body>
+
+<div class="layui-upload-list">
+    <img class="layui-upload-img" id="img" style="margin-left: 20px" height="200px" width="200px">
+</div>
+<button type="button" style="margin-left: 20px" class="layui-btn" id="upload">
+    <i class="layui-icon">&#xe67c;</i>上传图片
+</button>
+
+<div>匹配结果</div>
+
+<div id="imglist">
+</div>
+
+
+<script src="layui/layui.js"></script>
+<script>
+
+
+    layui.use('upload', function () {
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upload' //绑定元素
+            , url: 'http://127.0.0.1:8080/search' //上传接口
+            , before: function (obj) {
+                obj.preview(function (index, file, result) {
+                    $("#img").attr("src", result);
+                });
+                layer.load();
+            }
+            , done: function (res) {
+                //上传完毕回调
+                var array = res.result;
+                var imgList = new Array();
+                for (var i = 0; i < array.length; i++) {
+                    var score = array[i].score;
+                    if (score >= 0.7) {
+                        // $("#img1").attr("src", "image/"+array[i].brief);
+                        imgList.push("image/" + array[i].brief);
+                    }
+                }
+                var list = $("#imglist");
+                list.children().remove();
+                for (var i = 0; i < imgList.length; i++) {
+                    // $("#img1").attr("src", imgList[i]);
+                    var img = imgList[i];
+                    var body = "<img class=\"layui-upload-img\" id=\"img1\" src=\""+img+"\" alt=\"\" width=\"200px\" height=\"200px\" style='margin-left: 20px'>";
+                    list.append(body);
+                }
+                layer.closeAll('loading');
+            }
+            , error: function () {
+                //请求异常回调
+                layer.closeAll('loading');
+            }
+        });
+    });
+</script>
+</body>
+</html>
