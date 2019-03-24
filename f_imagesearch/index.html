@@ -9,7 +9,7 @@
 <body style="margin-left: 50px">
 
 <div class="layui-upload-list">
-    <img class="layui-upload-img" id="img" style="margin-left: 20px" height="200px" width="200px">
+    <img class="layui-upload-img" id="img" style="margin-left: 20px" height="200px" width="400px">
 </div>
 <button type="button" style="margin-left: 20px" class="layui-btn" id="upload">
     <i class="layui-icon">&#xe67c;</i>上传图片
@@ -56,6 +56,7 @@
                 layer.load();
             }
             , done: function (res) {
+                console.log(res);
                 //上传完毕回调
                 var array = res.result;
                 var imgList = new Array();
@@ -73,7 +74,7 @@
                 for (var i = 0; i < imgList.length; i++) {
                     // $("#img1").attr("src", imgList[i]);
                     var img = imgList[i];
-                    var body = "<img class=\"layui-upload-img\" id=\"img1\" src=\"" + img + "\" alt=\"\" width=\"200px\" height=\"200px\" style='margin-left: 20px'>";
+                    var body = "<img class=\"layui-upload-img\" id=\"img1\" src=\"" + img + "\" alt=\"\" width=\"400px\" height=\"200px\" style='margin-left: 20px'>";
                     list.append(body);
                 }
                 layer.closeAll('loading');

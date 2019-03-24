@@ -32,12 +32,16 @@
                 });
             }
             , done: function (res) {
+                console.log(res);
+                sleep(1000);
                 //上传完毕
                 if (res.error_code === 216681) {
                     layer.msg("图片已存在");
                 }else if (res.error_code === 18) {
                     layer.msg("api调用速度太快");
-                }else {
+                }else if (res.error_code === 216202) {
+                    layer.msg("上传的图片大小错误");
+                } else {
                     layer.msg("上传成功");
                 }
             }, error: function () {
@@ -46,5 +50,11 @@
             }
         });
     });
+    function sleep(delay) {
+        var start = (new Date()).getTime();
+        while ((new Date()).getTime() - start < delay) {
+            continue;
+        }
+    }
 </script>
 </html>

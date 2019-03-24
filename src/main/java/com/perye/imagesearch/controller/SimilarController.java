@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 相似图
@@ -33,7 +30,9 @@ public class SimilarController {
     public String similarAdd(MultipartFile file, HashMap<String, String> options) {
         try {
             byte[] image = file.getBytes();
-            String imageName = file.getOriginalFilename();
+            String random = UUID.randomUUID().toString();
+            String fileType = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."), file.getOriginalFilename().length());
+            String imageName = random + fileType;
             options.put("brief", imageName);
             InputStream inputStream = file.getInputStream();
             FileUtil.savePic(inputStream, imageName);
